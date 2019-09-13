@@ -62,12 +62,16 @@ public class WebWindowClient extends JFrame implements ActionListener, TCPConnet
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) { //Обработка клавиши Enter.
+        String msg = fieldInput.getText();
+        if(msg.equals("")) return; // Если случайно нажали ентер на пустой строчке, ничего не будет передаваться.
+        fieldInput.setText(null); // Если строчка есть, передаем.
+        connection.SendMessage(fieldNickname.getText() + ": " + msg); //Соединение присылает сообщение (Ник: текст)
 
     }
 
     @Override
-    public void onConnectionReady(TCPConnect tcpConnect) {
+    public void onConnectionReady(TCPConnect tcpConnect) {//Если подключились.
         printMessage("Connection Ready...");
     }
 
@@ -77,12 +81,12 @@ public class WebWindowClient extends JFrame implements ActionListener, TCPConnet
     }
 
     @Override
-    public void onDisconnect(TCPConnect tcpConnect) {
+    public void onDisconnect(TCPConnect tcpConnect) { //Если отключаемся.
         printMessage("Connection Close...");
     }
 
     @Override
-    public void onException(TCPConnect tcpConnect, Exception e) {
+    public void onException(TCPConnect tcpConnect, Exception e) { //Если искл.
         printMessage("Connection Exception: " + e);
     }
 
@@ -90,10 +94,11 @@ public class WebWindowClient extends JFrame implements ActionListener, TCPConnet
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                // новая строчка после ввода сообщения.
                 log.append(msg + "\n");
+                //гарантирует новую строчку.
                 log.setCaretPosition(log.getDocument().getLength());
             }
         });
     }
-
 }

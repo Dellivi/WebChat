@@ -26,8 +26,7 @@ public class TCPConnect {
                 try{
                     eventListener.onConnectionReady(TCPConnect.this);
                     while(!rxThread.isInterrupted()){
-                        String msg = in.readLine();
-                        eventListener.onReseiveString(TCPConnect.this, msg);
+                        eventListener.onReseiveString(TCPConnect.this, in.readLine());
                     }
                 }catch (IOException e){
                     eventListener.onException(TCPConnect.this, e);
